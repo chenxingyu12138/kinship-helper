@@ -19,13 +19,37 @@ python -m http.server 8080
 
 然后访问 http://localhost:8080
 
-## 在线访问（GitHub Pages）
+## 发布到 GitHub（公开访问）
 
-仓库启用 GitHub Pages 后，可通过以下地址访问（将 `用户名` 和 `仓库名` 替换为你的）：
+### 1. 在 GitHub 创建仓库
+
+1. 打开 https://github.com/new  
+2. 仓库名例如：`kinship-helper`（可自定）  
+3. 选择 **Public（公开）**  
+4. **不要**勾选 “Add a README”（本地已有代码）  
+5. 点击 Create repository  
+
+### 2. 推送本地代码
+
+在项目目录打开终端，执行（把 `你的用户名` 换成你的 GitHub 用户名）：
+
+```bash
+git remote add origin https://github.com/你的用户名/kinship-helper.git
+git push -u origin main
+```
+
+### 3. 开启 GitHub Pages
+
+1. 进入仓库 → **Settings** → **Pages**  
+2. **Build and deployment** → Source 选 **GitHub Actions**  
+3. 推送代码后，Actions 会自动部署（见 `.github/workflows/pages.yml`）  
+4. 部署完成后，访问地址为：
 
 ```
-https://用户名.github.io/仓库名/
+https://你的用户名.github.io/kinship-helper/
 ```
+
+该链接任何人可在浏览器打开使用。
 
 ## 技术说明
 
