@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>亲戚关系助手</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+    <main class="app-shell">
+      <section class="workspace" aria-labelledby="app-title">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">KINSHIP INTELLIGENCE</p>
+            <h1 id="app-title">亲戚关系助手</h1>
+            <p class="tagline">把复杂亲戚链路拆成一条发光路径，下一秒就知道该怎么称呼。</p>
+          </div>
+          <div class="mode-tabs" role="tablist" aria-label="查询模式">
+            <button class="tab-button active" data-panel="chain" type="button">关系链</button>
+            <button class="tab-button" data-panel="reverse" type="button">反向查询</button>
+            <button class="tab-button" data-panel="map" type="button">关系图谱</button>
+          </div>
+        </header>
+
+        <section class="panel active" id="chain-panel">
+          <div class="signal-strip" aria-label="产品能力">
+            <div><strong>1万+</strong><span>亲戚关系条目</span></div>
+            <div><strong>0.2s</strong><span>本地即时查询</span></div>
+            <div><strong>LIVE</strong><span>路径高亮图谱</span></div>
+          </div>
+
+          <div class="query-layout">
+            <div class="query-main">
+              <div class="query-meta">
+                <label class="field-label" for="chain-input">输入你想查询的关系</label>
+                <div class="gender-toggle" role="group" aria-label="我的性别">
+                  <span class="gender-label">我的性别</span>
+                  <button type="button" class="gender-button active" data-sex="1">男</button>
+                  <button type="button" class="gender-button" data-sex="0">女</button>
+                </div>
+              </div>
+              <div class="search-row">
+                <input
+                  id="chain-input"
+                  type="text"
+                  value=""
+                  placeholder="点击卡片拼接关系，或直接输入"
+                  autocomplete="off"
+                />
+                <button id="chain-submit" class="primary-button" type="button">查询</button>
+                <button id="chain-clear" class="ghost-button search-clear" type="button">清空</button>
+              </div>
+              <div class="quick-grid" aria-label="关系词卡片">
+                <button type="button" data-kin="爸爸">爸爸</button>
+                <button type="button" data-kin="妈妈">妈妈</button>
+                <button type="button" data-kin="丈夫">丈夫</button>
+                <button type="button" data-kin="妻子">妻子</button>
+                <button type="button" data-kin="哥哥">哥哥</button>
+                <button type="button" data-kin="弟弟">弟弟</button>
+                <button type="button" data-kin="姐姐">姐姐</button>
+                <button type="button" data-kin="妹妹">妹妹</button>
+                <button type="button" data-kin="儿子">儿子</button>
+                <button type="button" data-kin="女儿">女儿</button>
+                <button type="button" data-kin="爷爷">爷爷</button>
+                <button type="button" data-kin="奶奶">奶奶</button>
+                <button type="button" data-kin="外公">外公</button>
+                <button type="button" data-kin="外婆">外婆</button>
+              </div>
+            </div>
+
+            <aside class="history-panel">
+              <div class="section-heading">
+                <h2>历史记录</h2>
+                <button id="clear-history" class="ghost-button" type="button">清空</button>
+              </div>
+              <div id="history-list" class="history-list" aria-live="polite"></div>
+            </aside>
+          </div>
+
+          <section class="result-grid" aria-live="polite">
+            <article class="result-card primary-result">
+              <span class="card-label">正确称呼</span>
+              <h2 id="answer-title">等待查询</h2>
+              <p id="answer-summary">点击称谓卡片拼接关系，或输入后点「查询」。</p>
+              <div class="confidence-meter" aria-label="匹配可信度"><span></span></div>
+            </article>
+            <article class="result-card">
+              <span class="card-label">关系路径</span>
+              <div id="path-chips" class="path-chips"></div>
+            </article>
+            <article class="result-card">
+              <span class="card-label">关系说明</span>
+              <p id="answer-detail">查询后将显示详细说明。</p>
+            </article>
+            <article class="result-card">
+              <span class="card-label">亲缘类型</span>
+              <p id="answer-type">—</p>
+            </article>
+          </section>
+        </section>
+
+        <section class="panel" id="reverse-panel">
+          <label class="field-label" for="reverse-input">输入一个称呼</label>
+          <div class="search-row compact">
+            <input id="reverse-input" type="text" value="舅舅" autocomplete="off" />
+            <button id="reverse-submit" class="primary-button" type="button">解释</button>
+          </div>
+          <div class="reverse-output">
+            <article class="result-card primary-result">
+              <span class="card-label">称呼解释</span>
+              <h2 id="reverse-title">舅舅</h2>
+              <p id="reverse-detail">妈妈的哥哥或弟弟，属于母系上一辈血亲。</p>
+            </article>
+            <article class="result-card">
+              <span class="card-label">常见关系链</span>
+              <p id="reverse-chain">妈妈的兄弟</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel" id="map-panel">
+          <div class="section-heading">
+            <h2>以「我」为中心的关系图谱</h2>
+            <span id="map-highlight">当前高亮：无</span>
+          </div>
+          <div class="graph-wrap">
+            <svg id="family-graph" viewBox="0 0 1280 1160" role="img" aria-label="亲戚关系图谱">
+              <g id="graph-links"></g>
+              <g id="graph-nodes"></g>
+            </svg>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="./relationship.min.js"></script>
+    <script src="./graph-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
